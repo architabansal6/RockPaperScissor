@@ -1,0 +1,84 @@
+<html>
+    <body>
+    	<H1>Hello</h1>
+
+    		<form name="form_1">
+			<input type="radio" name ="radio_rock" onClick="rockButtonClicked();">Rock
+			<input type="radio" name ="radio_paper" onClick="paperButtonClicked();" >Paper
+			<input type="radio" name ="radio_scissor" onClick="scissorButtonClicked();" >Scissor
+		</form>
+
+		<script src="/socket.io/socket.io.js"></script>
+      
+       	<script type="text/javascript">
+
+       	var name = prompt("Your name?");
+       	if (name === "") {
+    	// user pressed OK, but the input field was empty
+		} else if (name) {
+    	// user typed something and hit OK
+    		var socket = io.connect('http://localhost:8100', { query : "username="+name});
+
+		} else {
+    	// user hit cancel
+		}
+       //	var socket = io.connect('http://localhost:8100', { query : "username=Archi"});
+		
+		
+
+       	function rockButtonClicked(){
+		
+			var exp = window.document.form_1.radio_rock;
+			if(exp.checked == true){
+
+       			window.document.form_1.radio_paper.checked = false;
+       			window.document.form_1.radio_scissor.checked = false;
+       			sendDataToServer("rock");
+       			
+   
+       		}
+       	}
+       	function paperButtonClicked(){
+			
+			var exp = window.document.form_1.radio_paper;
+			if(exp.checked == true){
+
+       			window.document.form_1.radio_rock.checked = false;
+       			window.document.form_1.radio_scissor.checked = false;
+       			sendDataToServer("paper");
+       		}
+       	}
+       	function scissorButtonClicked(){
+			
+			var exp = window.document.form_1.radio_scissor;
+			if(exp.checked == true){
+
+       			window.document.form_1.radio_rock.checked = false;
+       			window.document.form_1.radio_paper.checked = false;
+       			sendDataToServer("scissors");
+       		}
+       	}
+
+		
+       	function sendDataToServer(choice){
+
+       		var socket = io.connect('http://localhost:8100', { query : "username="+name});
+
+			socket.emit('optionSelection',choice,function(result){
+				document.write("result is " + " " + result);
+
+			});
+       			
+
+       	}
+           
+		</script>
+		
+		
+		<!-- socket.on('message',function(message){
+			alert('the server says: ' + message);
+		});
+		socket.emit('name',name); -->
+		</script>
+   	</body>
+</html>
